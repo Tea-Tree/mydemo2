@@ -1,0 +1,296 @@
+/* Empty. Add your own CSS if you like */
+
+
+/* 项目具体信息页 */
+
+
+/* 项目信息，project.html */
+ #projectlist{
+	margin-bottom: 45px;
+
+ }
+ #projectlist .list .item.item-complex{
+	padding:0;
+ }
+ #projectlist .button.button-assertive{
+	padding-top: 5px;
+ }
+
+ .bar-dark .button-bar .button{
+   color: #ef4e3a;
+    border: 0 solid #ef4e3a;
+ }
+	/* 图标放大 ,改色*/
+ .bigger{
+	font-size: 24px;
+	color:#1D89E2;
+ }
+ /*图标放大*/
+ .my-icon{
+	font-size:26px;
+ }
+
+ /* project,divider */
+ .list .item-divider{
+	background: #C7E4FC;
+ }
+ .item-divider button{
+	top: 5px;
+ }
+ /* project.footer按钮弹框 */
+ .project-parts{
+	bottom: 45px;
+	position: absolute;
+	width: 50%;
+ }
+ .project-parts .item{
+	background-color:#FCF2F1;
+ }
+
+
+/* 项目进程，progress.html*/
+ .progress .item-divider{
+	background-color: #fff;
+	border-top-color: #fff;
+	border-bottom-color: #629FFD;
+	border-width: 3px;
+	padding-bottom: 8px;
+	
+ }
+ .progress .button{
+	line-height: 20px;
+	min-height: 20px;
+	margin-top: -5px;
+ }
+
+ #progress_Icon{
+ 	height:40px;
+ 	width:160px;
+ }
+ 
+ 
+
+
+/* 添加任务，addTask.html */
+ .my-input-label{
+	font-size:16px;
+	max-width: 200px;
+	width:65%;
+	text-align: right;
+ }
+ label.item-input span.input-label {
+	width:100px;
+ }
+
+/*登陆，login.html*/
+ #login .scroll-content,#signup .scroll-content{
+ 	margin-top: 110px;
+ }
+
+
+/*主界面，home.html*/
+ #home .bar{
+ 	height:50px;
+ }
+ #home ion-nav-bar .button.icon{
+ 	padding:6px 2px 0 8px;
+	
+ }
+ #home .list{
+	padding-top: 8px;
+ }
+ #home span.user{
+	font-weight: bold;
+	margin-left: 65%;
+	margin-top: 12px;
+ }
+
+/* home-menu.html */
+ #home_icon {
+ 	width:200px;
+ 	height: 160px;
+ 	margin-top: 6px;
+ }
+ #home_icon .msg_new-1 {
+    background: none repeat scroll 0 0 #FF4D4D;
+    border-radius: 50%;
+    color: #FF3E3E;
+    height: 5px;
+    left: 35px;
+    padding: 0 3px;
+    position: absolute;
+    top: 10px;
+    width: 5px;
+
+ }
+
+/*通知， msgNotice.html */
+
+
+ #msgNotice .tabs-top .tabs , 
+ #msgNotice .tabs.tabs-top{
+ 	top:5px;
+ 	padding-left: 8px;
+ 	padding-right: 8px;
+ 	
+ 	width: 100%;
+ 	border:0 none ;
+
+ }
+
+ #msgNotice .tab-item{
+	max-width: 50%;
+	border-color: #4a87ee;
+    border-style: solid;
+    border-width: 1px;
+    color: #4a87ee;
+    height: 44px;
+ }
+
+ #msgNotice .tabs-top.tabs-striped .tab-item.tab-item-active,
+ #msgNotice .tabs-top.tabs-striped .tab-item.active,
+ #msgNotice .tabs-top.tabs-striped .tab-item.activated {
+    border-style: solid;
+    border-width: 1px !important;
+    margin-bottom: -2px;
+    margin-top: 0;
+     background-color: #4a87ee;
+    box-shadow: none;
+    color: #fff;
+ }
+
+ #msgNotice .tabs-icon-left .tabs .tab-item{
+	font-size:14px;
+	line-height: 44px;
+ } 
+ #msgNotice .has-tabs-top{
+	top:56px;
+ }
+ .isRead-0 {
+ 	background-color: #EEEEEE;
+ 	
+
+ }
+
+/*通知详细，msgDetail.html*/
+ #msgDetail.card {
+	margin:0;
+ }
+
+
+/*任务详细， taskDetail.html*/
+ hr{
+	margin-left: 40px;
+	margin-top: -10px;
+	border-color: #ddd;
+	border-style: dashed;
+ }
+ #taskDetail .button.button-block{
+	width:40%;
+	float:right;
+ }
+ #taskDetail .padding{
+	padding:40px;
+ }
+ #taskDetail .padding .button.button-block:first-child{
+	margin-top:-25px;
+	margin-right: -25px;
+ }
+ #logs .item{
+	border-style:none;
+	font-size:12px;
+	margin-left: 10px;
+ }
+ #taskDetail .taskState-todo:before {
+ 	  content: "\f1df"; 
+ }
+ #taskDetail .taskState-doing:before {
+ 	  content: "\f33a"; 
+ }
+ #taskDetail .taskState-done:before {
+ 	  content: "\f1e0"; 
+ }
+ #taskDetail .taskState-todo:before,
+ #taskDetail .taskState-doing:before,
+ #taskDetail .taskState-done:before{
+ 	display: inline-block;
+    font-family: "Ionicons";
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-rendering: auto;
+    text-transform: none;
+ }
+
+
+
+/* 重写ionic.css */
+.button-icon .icon:before, .button-icon.icon:before {
+    font-size: 24px;
+}
+.item-button-right > .button {
+	margin-right: -25px;
+}
+
+.button .icon:before, .button.icon:before, .button.icon-left:before, .button.icon-right:before {
+	line-height: 20px;
+	padding:0 0 8px;
+}
+/*.item{
+	padding:8px 0 8px  8px;
+	
+}*/
+/* .item .item-content{
+	padding:8px 49px 8px 16px ;
+} */
+.button-bar.calm .button {
+	flex:auto !important;
+}
+.item.active, .item.activated,  .item .item-content.active, .item .item-content.activated{
+	background-color:#A4C6FD;
+	border-color:#A0D3FA;
+
+}
+.item-select select{
+	direction:ltr;
+	padding:10px 40px 18px 16px ;
+	
+}
+input,textarea{
+	flex:1 0 120px;
+}
+.item-note{
+	padding-top: 5px;
+	margin-right: 10px;
+}
+.action-sheet .button{
+	font-size: 15px;
+}
+.button.active, .button.activated {
+    background-color: #CEE7FF;
+    border-color: #88C4FF;
+   
+}
+
+.button:hover {
+	color:#9DCEFF;
+}
+
+.popover .scroll-content{
+	margin:0 ;
+	z-index:5;
+}
+.popover{
+	margin-top: 8px;
+}
+.item-divider{
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.tab-item{
+	max-width:50%;
+}
+
+/* 项目具体信息页  end */

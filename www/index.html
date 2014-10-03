@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>MyDemo</title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    
+    <!--  chat 需要 -->
+    <link href="css/ionic.contrib.frostedGlass.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!--    <script src="lib/ionic/js/angular/angular.js"></script> -->
+
+   <!-- <script src="lib/ionic/js/angular/angular.min.js"></script>  -->
+    <!-- your app's js -->
+   <!-- <script src="js/mydemo-services.js"></script>   -->
+    <script src="js/app.js"></script>
+  
+    <!-- chat 需要 -->
+     <script src="js/ionic.contrib.frostedGlass.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+  
+  </head>
+
+
+<body ng-app="myDemo" ng-controller="RootCtrl"> 
+ 
+
+ <ion-nav-view animation="slide-right-left" ></ion-nav-view>
+    
+  
+<!-- login -->
+ <script id="templates/login.html" type="text/ng-template">
+
+  <ion-view id="login">
+  <div class=" padding-top padding-vertical" style="display:block; text-align:center;hight:200px;">
+    <label><img src="img/99.png"></label>
+  </div>
+
+  <div has-header="true" has-tabs="true" style="margin-left:10px; margin-right:10px;">
+    <form  name="form"  ng-submit="login(user)">
+      <div class="list">
+       
+        <label class="item item-input item-stacked-label ">
+          <span class="input-label  ">Account</span>
+          <input type="text" placeholder="Account" ng-model="user.account" />
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label " >Password</span>
+          <input type="password" placeholder="Password" ng-model="user.password"  />
+        </label>
+        
+        <div>
+          <button class="button button-block button-dark" type="submit" >Login</button>
+        </div>
+        <div style="text-align: center" >
+          Or <a href="/#/sign-in">Create an account</a>
+        </div>
+      </div>
+    </form>
+  </ion-content>
+ </div>
+
+    </script>
+
+  
+<!-- sign-in -->
+ <script id="templates/sign-in.html" type="text/ng-template">
+
+  <ion-view id="signup">
+
+  <div class=" padding-top padding-vertical" style="display:block; text-align:center;hight:200px;">
+    <label><img src="img/99.png"></label>
+  </div>
+
+  <ion-content has-header="true" has-tabs="true" padding="true">
+    <form ng-submit="signup(user)">
+      <div class="list">
+       
+        <label class="item item-input item-stacked-label ">
+          <span class="input-label ">Account</span>
+          <input type="text" placeholder="Account" ng-model="user.account">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label " >Password</span>
+          <input type="password" placeholder="Password" ng-model="user.password">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label " >UserName:</span>
+          <input type="text" placeholder="UserName" ng-model="user.name">
+        </label>
+
+        <div>
+          <button class="button button-block button-positive" type="submit" >Create Account</button>
+        </div>
+       
+      </div>
+    </form>
+  </ion-content>
+ </ion-view>
+
+    </script>
+
+<!-- home -->
+ <script id="templates/home.html" type="text/ng-template">
+ <ion-view id="home">
+   <ion-nav-bar class=" bar-dark">
+      <img src="img/99.png"  style="height:40px;"/>
+        
+      <button class="button button-icon icon ion-person  pull-right" ng-click="openMenu($event)" >
+      </button>
+
+     
+   </ion-nav-bar>
+
+    <ion-content>
+        <!-- content  -->
+         <ion-list class="list item-button-left" scroll="true">
+
+           <ion-item class="item-divider item-icon-left" ><i class=" my-icon icon ion-ios7-bookmarks-outline"></i>&nbsp;我的项目
+           </ion-item >
+            <ion-item class="item" 
+                      animation="slide-right-left"
+                      ng-repeat="project in projects | filter : {PCreater:activeUser.name} |filter : {Pteam:activeUser.name} " 
+                      ng-model="activeProject" href="#/tab/project"
+                      ng-show="project"
+                      ng-click="selectProject(project)" >
+                  {{project.Ptitle}}</ion-item>       
+
+           <ion-item class="item-divider item-icon-left"><i class="my-icon icon ion-ios7-bookmarks-outline"></i>&nbsp;参与项目
+           </ion-item>
+              <ion-item class="item " 
+                        ng-repeat="project in projects |filter : {Pteam:activeUser.name} " 
+                        ng-model="activeProject" href="#/tab/project" 
+                        ng-click="selectProject(project)" >
+                  {{project.Ptitle}}</ion-item>
+           
+         </ion-list>             
+    </ion-content>
+      </ion-view>
+    </script>
+
+<!--  all of the current project -->
+<!-- project  modal -->
+  <script id="templates/tabs.html" type="text/ng-template">
+  <div class="modal slide-in-left">
+   <ion-nav-bar class=" bar-positive">
+        
+      <button class="buttons left-buttons button "  ng-click="backHome()" >
+        <i class="icon ion-android-system-back"></i>
+      </button>
+        
+        <h1 class="title" ng-bind="activeProject.Ptitle"></h1>
+    </ion-nav-bar>
+
+      <ion-tabs class="tabs-striped tabs-top tabs-icon-left tabs-positive pull-right">
+
+       <!-- 项目详细 -->
+        <ion-tab title="Project" icon="ion-ios7-bookmarks" ng-click="toProject()">
+          <ion-nav-view name="home-tab"  ></ion-nav-view>
+        </ion-tab>
+       <!--  任务进程 -->
+        <ion-tab title="Progress" icon="ion-clipboard" ng-click="toProgress()">
+          <ion-nav-view name="progress-tab" ></ion-nav-view>
+        </ion-tab>
+
+      </ion-tabs>
+      </div>
+    </script>
+
+<!-- project -->
+    <script id="templates/project.html" type="text/ng-template">
+      <ion-view >
+       
+      <ion-content id="projectlist" 
+                   on-swipe-left="toProgress()"
+                   animation="slide-right-left">
+
+        <!-- content  -->
+         <ion-list class="list item-button-left" scroll="true">
+      <!-- 我的任务 -->    
+           <ion-item  style="border-top-color: #fff;font-weight: bold;"
+                      class="item item-icon-left"
+                      ng-click="MyTask(activeUser)">
+            <i class="icon ion-ios7-filing-outline "  ></i>&nbsp;我的任务
+           </ion-item>
+      <!-- 团队交流 --> 
+           <ion-item  class="item item-icon-left" style="font-weight:bold;"
+                      href="#/chat" 
+                      ng-click="selectMember(myUser)">
+            <i class="icon ion-ios7-chatbubble-outline"  ></i>&nbsp;团队交流
+           </ion-item>
+      <!-- 项目阶段 -->
+           <ion-item class="item-divider item-icon-left"  
+                     
+                     ng-click="hideStage()">
+              <i class="  icon ion-ios7-pulse"></i>&nbsp;项目阶段
+           </ion-item >
+            <ion-item ng-show="!activeProject.Pstages">
+                No stages 
+            </ion-item>
+            <ion-item class="item"  ng-show="stageShow" 
+                      ng-repeat="item in activeProject.Pstages"  item="item"
+                      ng-model="activeStage" 
+                      ng-click="selectStage(item)" >
+                  {{item.Stitle}}
+               <ion-option-button class="button-assertive" ng-click="onItemDelete($index)"> Delete</ion-option-button>
+            </ion-item>         
+
+      <!-- 团队成员 -->
+           <ion-item class="item-divider item-icon-left"
+                   
+                    ng-click="hideMember()">
+              <i class="my-icon icon ion-ios7-people-outline"></i>&nbsp;团队成员
+           </ion-item>
+       
+              <ion-item class="item "  ng-show="memberShow"
+                        ng-repeat="member in activeProject.Pteam"  item="member"
+                        ng-click="selectMember(member)" >{{member.name}}
+                
+              </ion-item>
+           
+         </ion-list>             
+        </ion-content>
+
+      </div>
+        <!-- footer -->
+        <div class="bar bar-footer bar-dark">
+         <div class="button-bar">
+         <button class="button  button-icon icon ion-gear-a" ng-click="show2()"></button>
+         </div>
+       </div>
+
+      </ion-view>
+
+    </script>
+
+<!-- stage's progress -->
+    <script id="templates/progress1.html" type="text/ng-template">
+      <ion-view ng-init="title=activeProject.Ptitle" >
+
+       <div  class="modal slide-right-left">
+        <ion-content  on-swipe-right="toProject()">
+           <!-- pull to refresh -->
+         <ion-refresher pulling-text="Pull to refresh..." 
+                        on-refresh="doRefresh()"
+                        refreshing-icon="ion ion-ios7-reloading">
+         </ion-refresher>
+
+         
+      <!-- 添加任务 -->
+         <ion-list class="list item-button-left" scroll="true">
+           <ion-item class="item-button-right" style="border-top-color: #fff;"  >
+            <span > 
+              <select class="item-select" ng-model="activeStage.stageNo" >
+              <option ng-repeat="stage in activeProject.Pstages" 
+                      ng-selected="stage.stageNo == activeStage.stageNo"
+                      value="stage.stageNo"
+                      ng-model="activeStage"
+                      ng-changed="changeStage(stage)">{{stage.Stitle}}
+              </option>
+            </select></span>
+            <button class="button button-icon icon ion-plus-round positive" ng-click="openNewStageTask()" style="margin-right: 0;">
+           
+            </button>
+           </ion-item>
+         
+          <div class="progress tabs-color-positive">
+
+      <!-- 待办中 -->
+          <ion-item class="item-divider item-button-right">待办中</ion-item>
+          <ion-item class="item " 
+                    ng-repeat="item in activeProject.Ptasks | filter : {stage:activeStage.Stitle} | filter:{state:'todo'}  " 
+                    ng-click="selectTask(item)" 
+                    ng-class="{active:activeProject.activeTask == item}" style="padding-left:40px">
+                    <button class="button button-icon ion ion-ios7-star-outline bigger" style="margin-left:-40px;" ng-click="openPopover(item,$event)" ></button>
+                {{item.title }}
+                  <span class="item-note" ng-bind="item.owner"></span>
+                </ion-item>
+         
+
+      <!-- 进行中 -->
+           <ion-item class="item-divider item-button-right" style="clear:both;">进行中</ion-item>
+              <ion-item class="item" ng-repeat="item in activeProject.Ptasks | filter : {stage:activeStage.Stitle} | filter:{state:'doing'}"  ng-click="selectTask(item)" style="padding-left:40px">
+               <button class="button button-icon ion ion-ios7-star-half bigger" style="margin-left:-40px;" ng-click="openPopover(item,$event)"></button>
+                {{item.title}}
+              <span class="item-note" ng-bind="item.owner"></span>
+              </ion-item>
+             
+      <!-- 已完成 -->
+          <ion-item class="item-divider item-button-right">已完成</ion-item>
+              <ion-item class="item" ng-repeat="item in activeProject.Ptasks | filter : {stage:activeStage.Stitle} | filter:{state:'done'}"  ng-click="selectTask(item)" style="padding-left:40px">
+               <button class="button button-icon ion ion-ios7-star bigger" style="margin-left:-40px;" ng-click="openPopover(item,$event)"></button>
+               {{item.title}}
+             <span class="item-note" ng-bind="item.owner"></span>
+              </ion-item>
+           </div> 
+         </ion-list>    
+        </ion-content>     
+         </div>
+      </ion-view>
+
+    </script>
+
+<!-- member's progress -->
+    <script id="templates/progress2.html" type="text/ng-template">
+      <ion-view ng-init="title=activeProject.Ptitle" >
+        <ion-content  on-swipe-right="toProject()">
+           <!-- pull to refresh -->
+         <ion-refresher pulling-text="Pull to refresh..." 
+                        on-refresh="doRefresh()"
+                        refreshing-icon="ion ion-ios7-reloading">
+         </ion-refresher>
+
+         
+      <!-- 添加任务 -->
+         <ion-list class="list item-button-left" scroll="true">
+           <ion-item class="item-button-right" style="border-top-color: #fff;"  >
+           <i class=" ion ion-happy " style="font-size:20px"></i> {{activeMember.name}}’s Tasks
+            <button class="button button-icon positive ion-plus-round " ng-click="openNewPersonalTask()" style="margin-right:0">
+            </button>
+           </ion-item>
+         
+          <div class="progress tabs-color-positive">
+
+      <!-- 待办中 -->
+          <ion-item class="item-divider item-button-right itemdivider-active">待办中</ion-item>
+        
+         
+          <ion-item class=" item" 
+                    ng-repeat="item in activeProject.Ptasks | filter : {owner:activeMember.name} | filter:{state:'todo'}" 
+                    style="padding-left:40px"ng-click="selectTask(item)" >
+                   
+               <button class="button button-icon ion ion-ios7-star-outline bigger" style="margin-left:-40px;" ng-click="openPopover(item,$event)"></button>
+              
+                   {{item.title }}
+          </ion-item>
+     
+
+      <!-- 进行中 -->
+           <ion-item class="item-divider item-button-right">进行中</ion-item>
+              <ion-item class="item" ng-repeat="item in activeProject.Ptasks | filter : {owner:activeMember.name} | filter:{state:'doing'}"  ng-click="selectTask(item)" style="padding-left:40px" >
+                 <button class="button button-icon ion ion-ios7-star-half bigger" style="margin-left:-40px;" ng-click="openPopover(item,$event)"></button>
+               {{item.title}}</ion-item>
+             
+      <!-- 已完成 -->
+          <ion-item class="item-divider item-button-right">已完成 </ion-item>
+              <ion-item class="item" ng-repeat="item in activeProject.Ptasks | filter : {owner:activeMember.name} | filter:{state:'done'}"  ng-click="selectTask(item)" style="padding-left:40px" > 
+                <button class="button button-icon ion ion-ios7-star bigger" 
+                        style="margin-left:-40px;" 
+                        ng-click="openPopover(item,$event)">
+                </button>
+             {{item.title}}
+             
+              </ion-item>
+             
+             </div> 
+         </ion-list>    
+
+
+        </ion-content>
+      </ion-view>
+    </script>
+
+<!-- chat -->
+ <script id="templates/chat.html" type="text/ng-template">
+  <ion-pane id="chat">
+   <ion-header-bar frosted-bar  type="bar-frosted" >
+      <button class="button button-icon button-stable"  ng-click="backProject()" >
+        <i class="icon ion-ios7-undo-outline"></i>
+      </button>
+      <h1 class="title" ng-bind="activeProject.Ptitle"></h1>
+   </ion-header-bar>
+
+  <ion-content has-header="true" has-footer="true" padding="true" start-y="0">
+        <ol class="messages">
+          <li ng-repeat="message in messages" ion-bind-html-unsafe="message.content">
+          </li>
+        </ol>
+      </ion-content>
+
+      <footer class="bar bar-footer bar-frosted">
+        <button class="button button-clear button-positive" ng-click="add()">Add Message</button>
+      </footer>
+      </ion-pane>
+
+
+    </script>
+
+<!-- progress addPersonalTesk -->
+  <script id="templates/newPersonalTask.html" type="text/ng-template">
+      <div  class="modal slide-in-up" >
+        <ion-header-bar class="bar-secondary  bar-calm">
+          <h1 class="title">New Personal Task</h1>
+          <button class="button  right-buttons" ng-click="closeNewPersonalTask()">
+            <i class="ion ion-android-close"></i>
+          </button>
+        </ion-header-bar>
+
+        <ion-content >
+          <form ng-submit="createTask(task)" >
+            <div class="list">
+              <label class="item item-input item-stacked-label ">
+                <span class="input-label input calm">Name</span>
+                <input type="text" placeholder="The Title" ng-model="task.title" >
+              </label>
+                <label class="item item-input item-stacked-label">
+                <span class="input-label calm">Discribe</span>
+                <textarea cols="10" rows="2" placeholder="the messages about the task " ng-model="task.discribe"></textarea>
+              </label>
+              <label class="item item-input">
+               <span class="input-label calm">责任人：</span>
+               <span class="input-label calm" ng-bind="activeMember.name" ng-modal="task.owner"></span>
+              </label>
+              <label class="item  item-input item-select">
+               <span class="ipnut-label calm" ng-switch on="switch">所属阶段：</span>
+               <span >
+                <select ng-model="task.stage">
+                <option ng-repeat="stage in activeProject.Pstages">{{stage.Stitle}}</option>
+                </select>
+                </span> 
+              </label>
+              <label class="hide" ng-init="task.state='todo' "></label>
+            </div>
+            <div class="padding">
+              <button type="submit" class="button button-block button-calm">Create Task</button>
+            </div>
+          </form>
+        </ion-content>
+      </div>
+    </script>
+
+<!-- progress addStageTesk-->
+  <script id="templates/newStageTask.html" type="text/ng-template">
+      <div  class="modal slide-in-up" >
+        <ion-header-bar class="bar-secondary  bar-calm">
+          <h1 class="title">New Stage Task</h1>
+          <button class="button  right-buttons" ng-click="closeNewStageTask()">
+            <i class="ion ion-android-close"></i>
+          </button>
+        </ion-header-bar>
+
+        <ion-content >
+          <form ng-submit="createTask(item) ">
+            <div class="list">
+              <label class="item item-input item-stacked-label ">
+                <span class="input-label input calm">Name</span>
+                <input type="text" placeholder="The Title" ng-model="item.title" >
+              </label>
+                <label class="item item-input item-stacked-label">
+                <span class="input-label calm">Discribe</span>
+                <textarea cols="10" rows="2" placeholder="the messages about the task" ng-model="item.discribe"></textarea>
+              </label>
+              <label class="item  item-input item-select">
+              <span class="ipnut-label calm">责任人：</span>
+                <select ng-model="item.owner">
+                <option ng-repeat="item in activeProject.Pteam">{{item.name}}</option>
+                </select> 
+              </label>
+              <label class="item  item-input ">
+              <span class="ipnut-label calm" >所属阶段：</span>
+              <span class="input-label calm"  ng-model="item.stage">{{activeStage.Stitle}}</span>
+              </label>
+              <label class="hide" ng-init="item.state='todo' "></label>
+            </div>
+            <div class="padding">
+              <button type="submit" class="button button-block button-calm">Create Task</button>
+            </div>
+          </form>
+        </ion-content>
+      </div>
+    </script>
+
+<!-- progress , progress-icon  -->
+ <script id="progress-Icon.html" type="text/ng-template">
+  <ion-popover-view id="progress_Icon">
+    <ion-content>
+       <div class="button-bar calm" >
+         <button class="button calm "  ng-click="updateTaskState('todo')" ><i class="my-icon ion-ios7-star-outline  "></i></button>
+         <button class="button calm "  ng-click="updateTaskState('doing')"><i class="my-icon ion-ios7-star-half "></i></button>
+         <button class="button calm " ng-click="updateTaskState('done')"><i class="my-icon ion-ios7-star"></i></button>
+         </div>
+    </ion-content>
+  </ion-popover-view>
+ </script>
+
+<!-- home , homeMenu -->
+ <script id="home-Icon.html" type="text/ng-template">
+  <ion-popover-view id="home_icon">
+     <ion-content>
+        <!-- content  -->
+         <ion-list class="list" scroll="false">
+
+           <ion-item class="item item-icon-left calm">
+              <i class=" my-icon icon ion-ios7-person-outline"></i>
+              {{activeUser.name}}
+           </ion-item >
+            <ion-item class="item item-icon-left calm"
+                     ng-click="newProject()">
+              <i class=" my-icon icon ion-ios7-compose-outline"></i>
+             新建项目
+           </ion-item >
+           <ion-item class="item item-icon-left calm"
+                     ng-click="MsgNotice()">
+              <i class=" my-icon icon ion-ios7-bell-outline"></i>
+              <i class="msg_new-{{isMsgRead}}"></i>
+             项目通知
+           </ion-item >
+       <!--    <ion-item class="item item-icon-left calm"
+                     ng-click="">
+              <i class=" my-icon icon ion-ios7-settings"></i>
+              设置
+           </ion-item >  -->
+           <ion-item class="item item-icon-left calm"
+                     ng-click="reLogin()">
+              <i class=" my-icon icon ion-ios7-glasses-outline"></i>
+             退出
+           </ion-item >
+           
+         </ion-list>             
+    </ion-content>
+  </ion-popover-view>
+ </script>
+
+<!-- msg-notice  modal  -->
+  <script id="templates/msgNotice.html" type="text/ng-template">
+   <div  id="msgNotice" class="modal slide-left-right"  >
+
+  <ion-tabs class="tabs-striped tabs-top tabs-icon-left tabs-positive pull-right button-bar">
+       <!-- 项目通知 -->
+        <ion-tab title="项目通知" icon="ion-ios7-bell-outline">
+
+          <ion-nav-view name="projectMsg-tab" > 
+              <ion-content on-swipe-left="closeNotice()">
+              <ion-list class="list">
+                <ion-item class="item isRead-{{msg.msgRead}}" scroll="scroll"
+                          ng-repeat="msg in msgNotice | filter : { Attr: 0 } "
+                          ng-click="selectMsg(msg)">
+                  {{msg.msgTitle}} 
+                </ion-item>
+              </ion-list>
+              </ion-content>
+          </ion-nav-view>
+        </ion-tab>
+       <!--  其他通知 -->
+        <ion-tab title="其他通知" icon="ion-ios7-bell-outline" >
+          <ion-nav-view name="otherMsg-tab">
+             <ion-content on-swipe-left="closeNotice()">
+              <ion-list class="list">
+                <ion-item class="item isRead-{{msg.msgRead}}" scroll="scroll"
+                          ng-repeat="msg in msgNotice | filter : { Attr: 1 }"
+                          ng-click="selectMsg(msg)">
+                  {{msg.msgTitle}}
+                </ion-item>
+              </ion-list>
+              </ion-content>
+          </ion-nav-view>
+        </ion-tab>
+      </ion-tabs>
+
+    </div>
+   
+    </script>
+
+<!--  msgDetail -->
+  <script id="templates/msgDetail.html" type="text/ng-template">
+     <div id="msgDetail" class="modal card " >
+        <ion-header-bar class="bar-secondary  bar-calm">
+          <h1 class="title" >{{activeMsg.msgTitle}} </h1>
+          <button class="button  right-buttons" ng-click="closeMsgDetail()">
+            <i class="ion ion-android-close"></i>
+          </button>
+        </ion-header-bar>
+        <ion-content >
+          <!-- 标题 -->
+          <div class="item ">
+             <p>{{activeMsg.msgDate}}&nbsp;&nbsp;{{activeMsg.msgPtitle}}</p>
+          </div>
+          <div style="margin-top:15px;margin-left:16px;">
+               {{activeMsg.msgContent}}
+          </div>
+         
+        </ion-content>   
+      </div>
+
+  </script>
+
+
+<!-- TaskDetail  -->
+   <script id="templates/taskDetail.html" type="text/ng-template">
+     <div  class="modal " >
+        <ion-header-bar class="bar-secondary  bar-calm">
+          <h1 class="title" ng-bind="activeTask.title"></h1>
+          <button class="button  right-buttons" ng-click="closeDetail()">
+            <i class="ion ion-android-close"></i>
+          </button>
+        </ion-header-bar>
+
+        <ion-content id="taskDetail" >
+    <!--toolbar -->
+         <div class="button-bar calm">
+         <button class="button calm " 
+                 style="width:35%;" 
+                 ng-click="openModal1()"
+                 ng-bind="activeTask.stage"><i class="my-icon ion-ios7-pulse "></i></button>
+         <button class="button calm " 
+                 style="width:35%;" 
+                 ng-click="openModal2()"
+                 ng-bind="activeTask.owner"><i class="my-icon ion-ios7-person-outline"></i></button>
+       
+         <button class="button calm " style="width:10%;" ng-click="openModal2()"><i class="my-icon ion-ios7-calendar-outline"></i></button>
+          <button class="button calm " style="width:10%;" ng-click="openModal2()"><i class="my-icon ion-ios7-trash-outline"></i></button>
+         </div>
+         
+    <!-- message form -->
+          <form ng-submit="updateTaskMsg(activeTask)">
+            <ion-list class="list">
+              <label class="item item-input  ">
+                <span class="icon my-icon calm taskState-{{activeTask.state}}" style="width:50px;">
+                   <!--  <button class="button button-icon my-icon  calm"  ></button>    -->
+                </span>
+                <input type="text" placeholder="任务名称" 
+                       ng-model="activeTask.title" >
+              </label>
+                <label class="item item-input ">
+                <span class="calm">描述： </span>
+                <textarea cols="10" rows="2" placeholder="任务描述 " ng-model="activeTask.discribe"></textarea>
+              </label>
+            </ion-list>
+            <div class="padding">
+              <button type="submit" class="button button-block button-calm">Update</button>
+            </div>
+          </form>
+
+    <!-- 修改记录 -->
+        <div id="logs">
+        <span class="calm" style="clear:both;">
+          &nbsp;&nbsp;记录<hr ></hr>
+        </span>
+          <ion-item ng-repeat="log in taskLogs | filter : {taskNo :activeTask.taskNo}" ng-bind="log.discribe">
+          </ion-item>
+        </div>
+
+
+        </ion-content>
+      </div>
+
+
+
+    </script>
+
+
+
+
+
+
+</body>  
+</html>

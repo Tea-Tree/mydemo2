@@ -1,0 +1,101 @@
+  //数据，用户
+  $scope.users=[
+      {name:'Sue',password:'222',account:'111'},
+      {name:'Jackson',password:'222',account:'112'}
+      ]; 
+
+  //数据，项目
+  $scope.projects = [
+       {PNo:'0',PCreater:'Sue',Ptitle:'学习项目1'},
+       {PNo:'1',PCreater:'Jackson',Ptitle:'测试项目'}
+  ]
+
+ //数据，阶段
+  $scope.stages = [
+        {stageNo:"0",projectId:'0',Stitle:'第一阶段'},
+        {stageNo:"1",projectId:'0',Stitle:"第二阶段"},
+        {stageNo:"2",projectId:'0',Stitle:'第三阶段'} ,
+        {stageNo:"3",Stitle:'第一阶段',projectId:'1'},
+        {stageNo:"4",Stitle:"第二阶段",projectId:'1'},
+        {stageNo:"5",Stitle:'第三阶段',projectId:'1'} 
+  ]  
+  //数据，团队成员
+  $scope.teams = [
+        {teamNo:'0',name:'Jackson',projectId:'0'},
+        {teamNo:'1',name:'Marry',projectId:'0'},
+        {teamNo:'2',name:'Sue',projectId:'0'},
+        {teamNo:'3',name:'Demon',projectId:'0'},
+        {teamNo:'4',name:'Jey',projectId:'0'},
+        {teamNo:'5',name:'Jackson',projectId:'1'},
+        {teamNo:'6',name:'Marry',projectId:'1'},
+        {teamNo:'7',name:'Sue',projectId:'1'} 
+  ]
+  //数据，任务
+  $scope.tasks = [
+        {taskNo:'0',title:'Read1',discribe:"read1 the javascript book",stage:"第一阶段",owner:'Sue',state:'todo',projectId:'0'},
+        {taskNo:'1',title:'Read2',discribe:"read2 the javascript book",stage:"第二阶段",owner:'Sue',state:'doing',projectId:'0'},
+        {taskNo:'2',title:'Write1',discribe:"Write1 the javascript book",stage:"第一阶段",owner:'Jackson',state:'todo',projectId:'0'},
+        {taskNo:'3',title:'Write2',discribe:"Write2 the javascript book",stage:"第二阶段",owner:'Jackson',state:'doing',projectId:'0'},
+        {taskNo:'4',title:'Speak2',discribe:"Speak2 the javascript book",stage:"第二阶段",owner:'Demon',state:'done',projectId:'0'},
+        {taskNo:'5',title:'Speak1',discribe:"Speak1 the javascript book",stage:"第一阶段",owner:'Demon',state:'todo',projectId:'0'},
+        {taskNo:'6',title:'Note1',discribe:"Note1 the javascript book",stage:"第一阶段",owner:'Marry',state:'doing',projectId:'0'},
+        {taskNo:'7',title:'Note2',discribe:"Note2 the javascript book",stage:"第二阶段",owner:'Marry',state:'done',projectId:'0'},
+        {taskNo:'8',title:'Listen1',discribe:"Listen1 the javascript book",stage:"第三阶段",owner:'Jey',state:'todo',projectId:'0'},
+        {taskNo:'9',title:'Listen2',discribe:"Listen2 the javascript book",stage:"第三阶段",owner:'Jey',state:'doing',projectId:'0'},
+        {taskNo:'10',title:'Read1',discribe:"read1 the javascript book",stage:"第一阶段",owner:'Sue',state:'todo',projectId:'1'},
+        {taskNo:'11',title:'Read2',discribe:"read2 the javascript book",stage:"第二阶段",owner:'Sue',state:'doing',projectId:'1'},
+        {taskNo:'12',title:'Write1',discribe:"Write1 the javascript book",stage:"第一阶段",owner:'Jackson',state:'todo',projectId:'1'},
+        {taskNo:'13',title:'Write2',discribe:"Write2 the javascript book",stage:"第二阶段",owner:'Jackson',state:'doing',projectId:'1'}, 
+        {taskNo:'14',title:'Note1',discribe:"Note1 the javascript book",stage:"第一阶段",owner:'Marry',state:'doing',projectId:'1'},
+        {taskNo:'15',title:'Note2',discribe:"Note2 the javascript book",stage:"第三阶段",owner:'Marry',state:'done',projectId:'1'}
+  ]
+  
+  //task 日志
+  $scope.taskLogs = [
+      {logNo:'0',taskNo:'0',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'9',taskNo:'0',discribe:'x年x月x日 这个项目被修改'},
+      {logNo:'1',taskNo:'1',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'2',taskNo:'2',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'3',taskNo:'3',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'4',taskNo:'4',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'5',taskNo:'5',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'6',taskNo:'6',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'7',taskNo:'7',discribe:'x年x月x日 这个项目被创建'},
+      {logNo:'8',taskNo:'8',discribe:'x年x月x日 这个项目被创建'},
+  ];
+  
+ //msgProject  项目通知 
+    //msgNo:消息编号（唯一）,
+    //attr:属性，1 ：其他通知，0：项目通知
+    //msgRead: 1 ：已读， 0 ：未读
+    //msgPtitle：所属项目
+    //msgTitle：通知名称
+    //msgContent:通知内容
+    //msgDate:通知时间
+    //projectId:所属项目
+  $scope.msgNotice = [
+    {msgNo:'0',Attr:'0',msgRead:'1',msgPtitle:'学习项目1',msgTitle:'学习项目1第一阶段任务-demon',msgContent:'这是一个学习项目',msgDate:'2014/9/1',projectId:'0'},
+    {msgNo:'1',Attr:'0',msgRead:'1',msgPtitle:'学习项目1',msgTitle:'学习项目1第一阶段任务-jey',msgContent:'这是一个学习项目',msgDate:'2014/9/1',projectId:'0'},
+    {msgNo:'2',Attr:'0',msgRead:'0',msgPtitle:'学习项目1',msgTitle:'学习项目1第一阶段任务-demon',msgContent:'这是一个学习项目',msgDate:'2014/9/1',projectId:'0'},
+    {msgNo:'3',Attr:'0',msgRead:'0',msgPtitle:'学习项目1',msgTitle:'学习项目1第一阶段任务-jackson',msgContent:'这是一个学习项目',msgDate:'2014/9/1',projectId:'0'},
+    {msgNo:'4',Attr:'0',msgRead:'0',msgPtitle:'学习项目1',msgTitle:'学习项目1第一阶段任务-jey',msgContent:'这是一个学习项目',msgDate:'2014/9/1',projectId:'0'},
+    {msgNo:'5',Attr:'0',msgRead:'0',msgPtitle:'测试项目',msgTitle:'测试项目1第一阶段任务-jackson',msgContent:'这是一个测试项目',msgDate:'2014/9/1',projectId:'1'},
+    {msgNo:'6',Attr:'0',msgRead:'0',msgPtitle:'测试项目',msgTitle:'测试项目1第一阶段任务-jackson',msgContent:'这是一个测试项目',msgDate:'2014/9/1',projectId:'1'},
+    {msgNo:'7',Attr:'0',msgRead:'1',msgPtitle:'测试项目',msgTitle:'测试项目1第一阶段任务-marry',msgContent:'这是一个测试项目',msgDate:'2014/9/1',projectId:'1'},
+    {msgNo:'8',Attr:'0',msgRead:'0',msgPtitle:'测试项目',msgTitle:'测试项目1第一阶段任务-sue',msgContent:'这是一个测试项目',msgDate:'2014/9/1',projectId:'1'},
+    {msgNo:'9',Attr:'0',msgRead:'1',msgPtitle:'测试项目',msgTitle:'测试项目1第一阶段任务-sue',msgContent:'这是一个测试项目',msgDate:'2014/9/1',projectId:'1'},
+    {msgNo:'10',Attr:'1',msgRead:'0',msgPtitle:'九九平台',msgTitle:'系统通知1',msgContent:'欢迎大家使用这个app',msgDate:'2014/9/1'},
+    {msgNo:'11',Attr:'1',msgRead:'0',msgPtitle:'九九平台',msgTitle:'系统通知2',msgContent:'大家好',msgDate:'2014/9/1'},
+    {msgNo:'12',Attr:'1',msgRead:'0',msgPtitle:'九九平台',msgTitle:'系统通知3',msgContent:'系统正在升级，请耐心等待',msgDate:'2014/9/1'},
+    {msgNo:'13',Attr:'1',msgRead:'1',msgPtitle:'九九平台',msgTitle:'升级通知',msgContent:'系统已经升级完毕，请使用',msgDate:'2014/9/1'},
+    {msgNo:'14',Attr:'1',msgRead:'1',msgPtitle:'九九平台',msgTitle:'更新通知',msgContent:'系统正在进行更新',msgDate:'2014/9/1'}
+    ];
+
+  //init 
+  $scope.activeProject = "";
+  $scope.activeUser = "";
+  $scope.activeMember="";
+  $scope.activeStage = "";
+  $scope.activeTask = "";
+
+
