@@ -70,7 +70,6 @@
  
  
 
-
 /* 添加任务，addTask.html */
  .my-input-label{
 	font-size:16px;
@@ -108,7 +107,7 @@
 /* home-menu.html */
  #home_icon {
  	width:200px;
- 	height: 160px;
+ 	height: 210px;
  	margin-top: 6px;
  }
  #home_icon .msg_new-1 {

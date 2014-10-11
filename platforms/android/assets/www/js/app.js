@@ -120,10 +120,11 @@ angular.module('myDemo', ['ionic'])
     saveTask:function(task){
       window.localStorage['Ptasks'] = angular.toJson(task);
     },
-    newProject: function(projectTitle,creater){
+    newProject: function(Pno,creater,projectTitle){
       return {
-        Ptitle:projectTitle,
+        PNo:Pno,
         PCreater:creater,
+        Ptitle:projectTitle,
         Pteam:[],
         Pstages:[],
         Ptasks:[] 
@@ -135,9 +136,10 @@ angular.module('myDemo', ['ionic'])
         Stitle:stagetitle
       };
     },
-    newMember:function(memberName){
+    newMember:function(teamNo,memberName){
       return{
-        Tname:memberName
+        teamNo:teamNo,
+        name:memberName
       };
     },
     newTask:function(taskNo,title,discribe,stage,owner,state){
@@ -223,11 +225,11 @@ angular.module('myDemo', ['ionic'])
   save:function(logs){
     window.localStorage['tasklogs'] = angular.toJson(logs);
   },
-  newLog:function(teskLog){
+  newLog:function(logNo,taskNo,discribe){
     return{
-      taskNo:teskLog.taskNo,
-      logNo:teskLog.logNo,
-      discribe:teskLog.discribe
+      taskNo:taskNo,
+      logNo:logNo,
+      discribe:discribe
     };
   }
  }
@@ -513,6 +515,30 @@ angular.module('myDemo', ['ionic'])
     };
   //显示有未读通知
     $scope.isMsgRead = 1; 
+  
+  //新建项目
+    $scope.newProject = function(){
+
+   //   $scope.closeMenu();
+
+       var projectTitle = prompt("New Project Name:");
+    if(projectTitle){
+      var PNo = $scope.projects.length ;
+      var PCreater = $scope.activeUser.name;
+      var Ptitle = projectTitle ; 
+      var newProject = Projects.newProject(PNo,PCreater,Ptitle);
+       $scope.projects.push(newProject);
+       Projects.saveProject($scope.projects);
+      
+       }
+
+        //添加member
+        var teamNo = newProject.Pteam.length;
+        var newMember  = Projects.newMember(teamNo,PCreater);
+        $scope.projects[PNo].Pteam.push(newMember);
+        Projects.saveMember(newMember);
+    }
+
   //打开通知
    $scope.openNotice = function(){
     $scope.msgModal.show();
@@ -566,7 +592,8 @@ angular.module('myDemo', ['ionic'])
     }
     //  alert($scope.activeMsg.msgRead);
     }
-   
+ 
+
 //method , functions about newStage
   //override , createStage  
   var createStage = function(stageTitle){
@@ -578,16 +605,16 @@ angular.module('myDemo', ['ionic'])
 
   };
 
-  $scope.openNewStage = function($event){
-  //   $scope.show2.hide();
-    var stageTitle = prompt("New Stage Name:");
-    if(stageTitle){
-      createStage(stageTitle);
-    }
+  // $scope.openNewStage = function($event){
+  // //   $scope.show2.hide();
+  //   var stageTitle = prompt("New Stage Name:");
+  //   if(stageTitle){
+  //     createStage(stageTitle);
+  //   }
 
-    //阻止事件冒泡
-    $event.stopPropagation();
-  };
+  //   //阻止事件冒泡
+  //   $event.stopPropagation();
+  // };
 
 
 //method ,functions about newTask
@@ -598,15 +625,24 @@ angular.module('myDemo', ['ionic'])
     if($scope.activeMember){
         task.owner = $scope.activeMember.name;
     }
-  
+      //创建新任务
     var taskNo = $scope.activeProject.Ptasks.length; 
     var newTask = Projects.newTask(taskNo,task.title,task.discribe,task.stage,task.owner,task.state);  
     $scope.activeProject.Ptasks.push(newTask);
     Projects.saveTask($scope.activeProject.Ptasks);
 
+
       $scope.taskModal1.hide();
       $scope.taskModal2.hide();
       
+      //创建新log
+      var logNo = $scope.taskLogs.length;
+      var discribe = newTask.title + "被" + task.owner + "创建" ; 
+      var newCreateLog = taskLogs.newLog(logNo,taskNo,discribe);
+      $scope.taskLogs.push(newCreateLog);
+      taskLogs.save($scope.taskLogs);
+
+
       //置空
       task.title="";
       task.discribe="";
@@ -636,45 +672,49 @@ angular.module('myDemo', ['ionic'])
  //显示manage2  sheet
   $scope.show2 = function(){
     var hideSheet = $ionicActionSheet.show({
-        buttons:[{text:'Add New Satge'},{text:'Invite New Member'},{text:'Exit the Project'}],
+        buttons:[
+              {text:'Add New Satge',
+                onTap:function(){
+                   var stageTitle = prompt("New Stage Name:");
+                   if(stageTitle){
+                     createStage(stageTitle);
+                   }
+                }},
+              {text:'Invite New Member',
+                onTap:function(){
+                   alert('invite new member is clicked');
+                }},
+              {text:'Exit the Project',
+               onTap:function(){
+                    var confirmPopup = $ionicPopup.confirm({
+                   title:'Are u sure to exit this program ?'
+                    });
+                 confirmPopup.then(function(res){
+              if(res){
+                  for(var i=0 ; i<$scope.activeProject.Pteam.length;i++){
+                  if($scope.activeProject.Pteam[i].name == $scope.activeUser.name){
+                       $scope.activeProject.Pteam.splice($scope.activeProject.Pteam[i].teamNo,1); 
+                   }
+                   $state.go('home');
+                 }
+               }else{
+                 // alert('不退出');
+              }
+           });
+               } }],
     cancelText:'Cancel',
     cancel:function(){
     },
     buttonClicked : function(index){
-      if(index == 0){
-       $scope.openNewStage();
-      
-      }else if(index == 1){
-        alert('invite new member is clicked');
-      }else if (index == 2){
-       //退出项目
-     //  $scope.reLogin = function(){
-        var confirmPopup = $ionicPopup.confirm({
-        title:'Are u sure to exit this program ?'
-      });
-      confirmPopup.then(function(res){
-        if(res){
-          for(var i=0 ; i<$scope.activeProject.Pteam.length;i++){
-             if($scope.activeProject.Pteam[i].name == $scope.activeUser.name){
-                 $scope.activeProject.Pteam.splice($scope.activeProject.Pteam[i].teamNo,1); 
-             }
-             $state.go('home');
-       }
-            
-         }else{
-           // alert('不退出');
-         }
-      });
-  // } 
-      }else {
-        alert('there are some errors ...');
-      }
   
-      return true;  //关闭sheet ,false 保持sheet打开
+  
+      return false;  //关闭sheet ,false 保持sheet打开
     }
 
      });
    };
+
+
 
   //删除操作 , 删除阶段  --连接数据库后需要修改
   $scope.onItemDelete = function(index){
@@ -748,17 +788,12 @@ angular.module('myDemo', ['ionic'])
   
    }
 
-
-
 //method ,functions about progress 
   
  // 改选阶段
   $scope.changeStage = function(stage){
     $scope.activeStage  = stage ;
   }
-
-
-
 
   // //监控activeStage的改变
   // $scope.$watch('selected',function(){
@@ -781,14 +816,29 @@ angular.module('myDemo', ['ionic'])
 
     };
    $scope.closePopover = function() {
+
     $scope.popover.hide();
     };
   
     //选择icon,修改task状态
   $scope.updateTaskState = function(stateString){
       $scope.activeTask.state = stateString;
+     
+        //创建更新log
+      var taskNo = $scope.activeTask.taskNo; 
+      var logNo = $scope.taskLogs.length;
+      var discribe = newTask.title + "的任务状态被" + $scope.activeUser.name+"修改为"  + stateString ; 
+      var newCreateLog = taskLogs.newLog(logNo,taskNo,discribe);
+      $scope.taskLogs.push(newCreateLog);
+      taskLogs.save($scope.taskLogs);
+      alert(newCreateLog.logNo);
+      alert(newCreateLog.taskNo);
+      alert(newCreateLog.discribe);
+     
 
+       $scope.closePopover();   //更改完状态后关闭pop
   }
+
 
 
 //method,functions about  taskDetail
@@ -810,7 +860,9 @@ angular.module('myDemo', ['ionic'])
   $scope.updateTaskMsg = function(task){
 
      Projects.saveTask($scope.activeProject.Ptasks);
+
      $scope.detailModal.hide();
+
   }
 
 

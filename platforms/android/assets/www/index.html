@@ -222,9 +222,7 @@
                     ng-click="hideMember()">
               <i class="my-icon icon ion-ios7-people-outline"></i>&nbsp;团队成员
            </ion-item>
-              <ion-item ng-show="!activeProject.Pteam">
-                No members 
-            </ion-item>
+       
               <ion-item class="item "  ng-show="memberShow"
                         ng-repeat="member in activeProject.Pteam"  item="member"
                         ng-click="selectMember(member)" >{{member.name}}
@@ -267,7 +265,8 @@
               <option ng-repeat="stage in activeProject.Pstages" 
                       ng-selected="stage.stageNo == activeStage.stageNo"
                       value="stage.stageNo"
-                      ng-model="activeStage">{{stage.Stitle}}
+                      ng-model="activeStage"
+                      ng-changed="changeStage(stage)">{{stage.Stitle}}
               </option>
             </select></span>
             <button class="button button-icon icon ion-plus-round positive" ng-click="openNewStageTask()" style="margin-right: 0;">
@@ -481,7 +480,7 @@
       </div>
     </script>
 
-<!-- progress , progress-icon  -->
+<!-- progress , task-state  -->
  <script id="progress-Icon.html" type="text/ng-template">
   <ion-popover-view id="progress_Icon">
     <ion-content>
@@ -504,6 +503,11 @@
            <ion-item class="item item-icon-left calm">
               <i class=" my-icon icon ion-ios7-person-outline"></i>
               {{activeUser.name}}
+           </ion-item >
+            <ion-item class="item item-icon-left calm"
+                     ng-click="closeMenu(); newProject()">
+              <i class=" my-icon icon ion-ios7-compose-outline"></i>
+             新建项目
            </ion-item >
            <ion-item class="item item-icon-left calm"
                      ng-click="MsgNotice()">

@@ -480,7 +480,7 @@
       </div>
     </script>
 
-<!-- progress , progress-icon  -->
+<!-- progress , task-state  -->
  <script id="progress-Icon.html" type="text/ng-template">
   <ion-popover-view id="progress_Icon">
     <ion-content>
@@ -505,7 +505,7 @@
               {{activeUser.name}}
            </ion-item >
             <ion-item class="item item-icon-left calm"
-                     ng-click="newProject()">
+                     ng-click="closeMenu(); newProject()">
               <i class=" my-icon icon ion-ios7-compose-outline"></i>
              新建项目
            </ion-item >

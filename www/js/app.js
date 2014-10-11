@@ -225,11 +225,11 @@ angular.module('myDemo', ['ionic'])
   save:function(logs){
     window.localStorage['tasklogs'] = angular.toJson(logs);
   },
-  newLog:function(teskLog){
+  newLog:function(logNo,taskNo,discribe){
     return{
-      taskNo:teskLog.taskNo,
-      logNo:teskLog.logNo,
-      discribe:teskLog.discribe
+      taskNo:taskNo,
+      logNo:logNo,
+      discribe:discribe
     };
   }
  }
@@ -518,6 +518,9 @@ angular.module('myDemo', ['ionic'])
   
   //新建项目
     $scope.newProject = function(){
+
+   //   $scope.closeMenu();
+
        var projectTitle = prompt("New Project Name:");
     if(projectTitle){
       var PNo = $scope.projects.length ;
@@ -602,16 +605,16 @@ angular.module('myDemo', ['ionic'])
 
   };
 
-  $scope.openNewStage = function($event){
-  //   $scope.show2.hide();
-    var stageTitle = prompt("New Stage Name:");
-    if(stageTitle){
-      createStage(stageTitle);
-    }
+  // $scope.openNewStage = function($event){
+  // //   $scope.show2.hide();
+  //   var stageTitle = prompt("New Stage Name:");
+  //   if(stageTitle){
+  //     createStage(stageTitle);
+  //   }
 
-    //阻止事件冒泡
-    $event.stopPropagation();
-  };
+  //   //阻止事件冒泡
+  //   $event.stopPropagation();
+  // };
 
 
 //method ,functions about newTask
@@ -622,15 +625,24 @@ angular.module('myDemo', ['ionic'])
     if($scope.activeMember){
         task.owner = $scope.activeMember.name;
     }
-  
+      //创建新任务
     var taskNo = $scope.activeProject.Ptasks.length; 
     var newTask = Projects.newTask(taskNo,task.title,task.discribe,task.stage,task.owner,task.state);  
     $scope.activeProject.Ptasks.push(newTask);
     Projects.saveTask($scope.activeProject.Ptasks);
 
+
       $scope.taskModal1.hide();
       $scope.taskModal2.hide();
       
+      //创建新log
+      var logNo = $scope.taskLogs.length;
+      var discribe = newTask.title + "被" + task.owner + "创建" ; 
+      var newCreateLog = taskLogs.newLog(logNo,taskNo,discribe);
+      $scope.taskLogs.push(newCreateLog);
+      taskLogs.save($scope.taskLogs);
+
+
       //置空
       task.title="";
       task.discribe="";
@@ -658,15 +670,19 @@ angular.module('myDemo', ['ionic'])
 //method ,functions about project
 
  //显示manage2  sheet
-  $scope.show2 = function(){
+   $scope.show2 = function(){
     var hideSheet = $ionicActionSheet.show({
         buttons:[{text:'Add New Satge'},{text:'Invite New Member'},{text:'Exit the Project'}],
     cancelText:'Cancel',
     cancel:function(){
     },
     buttonClicked : function(index){
+      hideSheet();
       if(index == 0){
-       $scope.openNewStage();
+       var stageTitle = prompt("New Stage Name:");
+       if(stageTitle){
+            createStage(stageTitle);
+         }
       
       }else if(index == 1){
         alert('invite new member is clicked');
@@ -699,6 +715,7 @@ angular.module('myDemo', ['ionic'])
 
      });
    };
+
 
   //删除操作 , 删除阶段  --连接数据库后需要修改
   $scope.onItemDelete = function(index){
@@ -772,8 +789,6 @@ angular.module('myDemo', ['ionic'])
   
    }
 
-
-
 //method ,functions about progress 
   
  // 改选阶段
@@ -802,14 +817,29 @@ angular.module('myDemo', ['ionic'])
 
     };
    $scope.closePopover = function() {
+
     $scope.popover.hide();
     };
   
     //选择icon,修改task状态
   $scope.updateTaskState = function(stateString){
       $scope.activeTask.state = stateString;
+     
+        //创建更新log
+      var taskNo = $scope.activeTask.taskNo; 
+      var logNo = $scope.taskLogs.length;
+      var discribe = newTask.title + "的任务状态被" + $scope.activeUser.name+"修改为"  + stateString ; 
+      var newCreateLog = taskLogs.newLog(logNo,taskNo,discribe);
+      $scope.taskLogs.push(newCreateLog);
+      taskLogs.save($scope.taskLogs);
+      alert(newCreateLog.logNo);
+      alert(newCreateLog.taskNo);
+      alert(newCreateLog.discribe);
+     
 
+       $scope.closePopover();   //更改完状态后关闭pop
   }
+
 
 
 //method,functions about  taskDetail
@@ -831,7 +861,9 @@ angular.module('myDemo', ['ionic'])
   $scope.updateTaskMsg = function(task){
 
      Projects.saveTask($scope.activeProject.Ptasks);
+
      $scope.detailModal.hide();
+
   }
 
 
