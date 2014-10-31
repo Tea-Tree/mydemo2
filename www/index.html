@@ -63,7 +63,7 @@
           <button class="button button-block button-dark" type="submit" >Login</button>
         </div>
         <div style="text-align: center" >
-          Or <a href="/#/sign-in">Create an account</a>
+          Or <a href="#/sign-in" >Create an account</a>
         </div>
       </div>
     </form>
@@ -480,7 +480,7 @@
       </div>
     </script>
 
-<!-- progress , task-state  -->
+<!-- progress , progress-icon  -->
  <script id="progress-Icon.html" type="text/ng-template">
   <ion-popover-view id="progress_Icon">
     <ion-content>
@@ -505,7 +505,7 @@
               {{activeUser.name}}
            </ion-item >
             <ion-item class="item item-icon-left calm"
-                     ng-click="closeMenu(); newProject()">
+                     ng-click="newProject()">
               <i class=" my-icon icon ion-ios7-compose-outline"></i>
              新建项目
            </ion-item >
@@ -593,8 +593,7 @@
       </div>
 
   </script>
-
-
+  
 <!-- TaskDetail  -->
    <script id="templates/taskDetail.html" type="text/ng-template">
      <div  class="modal " >
@@ -661,7 +660,6 @@
 
 
 
-
-
 </body>  
+
 </html>

@@ -40,7 +40,7 @@ angular.module('myDemo', ['ionic'])
     .state('sign-in',{
       url:"/sign-in",
       templateUrl:'templates/sign-in.html',
-      animation:'slide-right-left'
+      animation:'slide-left-right'
     })
   //home
     .state('home',{
@@ -415,7 +415,7 @@ angular.module('myDemo', ['ionic'])
   }
 
 
- //method , refresh tasks (待修改)
+//method , refresh tasks (待修改)
   $scope.doRefresh = function(){
       $http.get('/new-items')
       .success(function(newtasks){
@@ -472,12 +472,17 @@ angular.module('myDemo', ['ionic'])
              $scope.activeUser = $scope.users[i];
              $state.go('home');
              break ;
-      }else{
-        alert('account or password is wrong .  ');
       }
     }
-
+      if($scope.activeUser == ""){
+        alert("Your account or password is wrong . ");
+      }
   }
+
+  //跳转到注册页面
+    $scope.toSign = function(){
+      $state.go("sign-in");
+    }
 
   //注册
   $scope.signup = function(user){
@@ -518,8 +523,7 @@ angular.module('myDemo', ['ionic'])
   
   //新建项目
     $scope.newProject = function(){
-
-   //   $scope.closeMenu();
+      $scope.closeMenu();  //关闭菜单
 
        var projectTitle = prompt("New Project Name:");
     if(projectTitle){
@@ -541,6 +545,7 @@ angular.module('myDemo', ['ionic'])
 
   //打开通知
    $scope.openNotice = function(){
+
     $scope.msgModal.show();
 
 
@@ -553,6 +558,8 @@ angular.module('myDemo', ['ionic'])
 
   //退出app
    $scope.reLogin = function(){
+     $scope.closeMenu();  //关闭菜单
+
       var confirmPopup = $ionicPopup.confirm({
         title:'Are u sure to Exit ?'
       });
@@ -605,16 +612,16 @@ angular.module('myDemo', ['ionic'])
 
   };
 
-  // $scope.openNewStage = function($event){
-  // //   $scope.show2.hide();
-  //   var stageTitle = prompt("New Stage Name:");
-  //   if(stageTitle){
-  //     createStage(stageTitle);
-  //   }
+  $scope.openNewStage = function($event){
+  //   $scope.show2.hide();
+    var stageTitle = prompt("New Stage Name:");
+    if(stageTitle){
+      createStage(stageTitle);
+    }
 
-  //   //阻止事件冒泡
-  //   $event.stopPropagation();
-  // };
+    //阻止事件冒泡
+    $event.stopPropagation();
+  };
 
 
 //method ,functions about newTask
@@ -637,7 +644,7 @@ angular.module('myDemo', ['ionic'])
       
       //创建新log
       var logNo = $scope.taskLogs.length;
-      var discribe = newTask.title + "被" + task.owner + "创建" ; 
+      var discribe = newTask.title + "被" +$scope.activeUser.name + "创建" ; 
       var newCreateLog = taskLogs.newLog(logNo,taskNo,discribe);
       $scope.taskLogs.push(newCreateLog);
       taskLogs.save($scope.taskLogs);
@@ -670,19 +677,20 @@ angular.module('myDemo', ['ionic'])
 //method ,functions about project
 
  //显示manage2  sheet
-   $scope.show2 = function(){
+  $scope.show2 = function(){
     var hideSheet = $ionicActionSheet.show({
         buttons:[{text:'Add New Satge'},{text:'Invite New Member'},{text:'Exit the Project'}],
     cancelText:'Cancel',
     cancel:function(){
     },
     buttonClicked : function(index){
-      hideSheet();
       if(index == 0){
-       var stageTitle = prompt("New Stage Name:");
-       if(stageTitle){
-            createStage(stageTitle);
-         }
+
+        hideSheet();
+        var stageTitle = prompt("New Stage Name:");
+        if(stageTitle){
+           createStage(stageTitle);
+        }
       
       }else if(index == 1){
         alert('invite new member is clicked');
@@ -714,8 +722,7 @@ angular.module('myDemo', ['ionic'])
     }
 
      });
-   };
-
+   };3
 
   //删除操作 , 删除阶段  --连接数据库后需要修改
   $scope.onItemDelete = function(index){
@@ -823,21 +830,8 @@ angular.module('myDemo', ['ionic'])
   
     //选择icon,修改task状态
   $scope.updateTaskState = function(stateString){
-      $scope.activeTask.state = stateString;
-     
-        //创建更新log
-      var taskNo = $scope.activeTask.taskNo; 
-      var logNo = $scope.taskLogs.length;
-      var discribe = newTask.title + "的任务状态被" + $scope.activeUser.name+"修改为"  + stateString ; 
-      var newCreateLog = taskLogs.newLog(logNo,taskNo,discribe);
-      $scope.taskLogs.push(newCreateLog);
-      taskLogs.save($scope.taskLogs);
-      alert(newCreateLog.logNo);
-      alert(newCreateLog.taskNo);
-      alert(newCreateLog.discribe);
-     
-
-       $scope.closePopover();   //更改完状态后关闭pop
+      $scope.activeTask.state = stateString; 
+      $scope.closePopover();   //更改完状态后关闭pop
   }
 
 
